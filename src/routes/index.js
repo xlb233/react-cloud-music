@@ -12,7 +12,7 @@ import Rank from '../application/Rank';
 export default [
   {
     path: "/",
-    component: "Home",
+    component: Home,
     routes: [
       {
         path: "/",
