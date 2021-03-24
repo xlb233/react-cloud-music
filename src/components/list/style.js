@@ -1,6 +1,6 @@
 // 推荐列表组件的样式，将在./index中被使用
 
-import styled from'styled-components';
+import styled from 'styled-components';
 import style from '../../assets/global-style';
 
 export const ListWrapper = styled.div` // 创建一个有如下属性的div
@@ -10,6 +10,7 @@ export const ListWrapper = styled.div` // 创建一个有如下属性的div
     padding-left: 6px;
     font-size: 14px;
     line-height: 60px;
+    color: ${style["font-color"]};
   }
 `;
 export const List = styled.div`
@@ -31,7 +32,8 @@ export const ListItem = styled.div`
       width: 100%;
       height: 35px;
       border-radius: 3px;
-      background: linear-gradient (hsla (0,0%,43%,.4),hsla (0,0%,100%,0));
+      background: linear-gradient(hsla(0,0%,43%,.4),hsla(0,0%,100%,0));
+      z-index: 1;
     }
     position: relative;
     height: 0;
@@ -40,9 +42,10 @@ export const ListItem = styled.div`
       position: absolute;
       right: 2px;
       top: 2px;
-      font-size: ${style ["font-size-s"]};
+      font-size: ${style["font-size-s"]};
       line-height: 15px;
-      color: ${style ["font-color-light"]};
+      color: ${style["font-color-light"]}!important;
+      z-index: 1;
       .play {
         vertical-align: top;
       }
@@ -60,8 +63,8 @@ export const ListItem = styled.div`
       padding: 0 2px;
       height: 50px;
       text-align: left;
-      font-size: ${style ["font-size-s"]};
+      font-size: ${style["font-size-s"]};
       line-height: 1.4;
-      color: ${style ["font-color-desc"]};
+      color: ${style["font-color-desc"]};
     }
 `;

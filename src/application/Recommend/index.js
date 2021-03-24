@@ -3,6 +3,8 @@
 import React from 'react';
 import Slider from "../../components/slider" // 引入banner轮播组件
 import RecommendList from "../../components/list" // 引入推荐列表组件
+import Scroll from '../../baseUI/scroll/index'; // 引入better-scroll插件
+import { Content } from "./style";
 
 
 function Recommend (props) {
@@ -21,10 +23,14 @@ function Recommend (props) {
     }
   })
   return (
-    <div>
-      <Slider bannerList={bannerList} />
-      <RecommendList recommendList={recommendList} />
-    </div>
+    <Content>
+      <Scroll  className="list">
+        <div>
+          <Slider bannerList={bannerList} />
+          <RecommendList recommendList={recommendList} />
+        </div>
+      </Scroll>
+    </Content>
   )
 }
 
