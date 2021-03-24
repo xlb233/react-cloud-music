@@ -1,6 +1,6 @@
 // 推荐列表组件，将被推荐组件引用。
 import React from 'react';
-import { 
+import {
   ListWrapper,
   ListItem,
   List
@@ -17,6 +17,7 @@ function RecommendList (props) {
           props.recommendList.map ((item, index) => {
             return (
               <ListItem key={item.id + index}>
+                  {console.log(item.id + index)}
                 <div className="img_wrapper">
                   <div className="decorate"></div>
                     {/* 加此参数可以减小请求的图片资源大小 */}
@@ -24,7 +25,7 @@ function RecommendList (props) {
                   <div className="play_count">
                     <i className="iconfont play">&#xe885;</i>
                     {/* 此处getCount函数会定义在src/api/utils中 */}
-                    <span className="count">{getCount (item.playCount)}</span> 
+                    <span className="count">{getCount (item.playCount)}</span>
                   </div>
                 </div>
                 <div className="desc">{item.name}</div>
@@ -34,7 +35,7 @@ function RecommendList (props) {
         }
       </List>
     </ListWrapper>
-  )    
+  )
 }
 
 export default React.memo(RecommendList)

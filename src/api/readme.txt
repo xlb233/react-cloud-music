@@ -1,0 +1,1 @@
+用于存放一些公用函数，config.js是axios配置文件，request.js用来处理不同的请求，utils.js中存放了一些公用的工具函数

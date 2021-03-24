@@ -1,1 +1,1 @@
-redux的store文件，保证单一数据源
+redux的全局store文件，保证单一数据源

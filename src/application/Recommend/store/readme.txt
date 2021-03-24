@@ -1,0 +1,1 @@
+Recommend组件的store单一数据源
