@@ -7,7 +7,7 @@ import Slider from "../../components/slider" // 引入banner轮播组件
 import RecommendList from "../../components/list" // 引入推荐列表组件
 import Scroll from '../../baseUI/scroll/index'; // 引入better-scroll插件
 import {Content} from "./style";
-
+import { forceCheck } from 'react-lazyload';
 
 function Recommend(props) {
     // // banner轮播mock数据
@@ -29,8 +29,12 @@ function Recommend(props) {
     const {getBannerDataDispatch, getRecommendListDataDispatch} = props;
 
     useEffect(() => {
-        getBannerDataDispatch();
-        getRecommendListDataDispatch();
+        if(!bannerList.length){
+            getBannerDataDispatch();// 若已经有数据，就不再请求，可减少请求次数，提高性能
+        }
+        if(!recommendList.length) {
+            getRecommendListDataDispatch();
+        }
         //eslint-disable-next-line
     }, []);
 
@@ -39,7 +43,8 @@ function Recommend(props) {
 
     return (
         <Content>
-            <Scroll className="list">
+            {/*使用forceCheck函数，实现滑动到哪哪才加载的效果*/}
+            <Scroll className="list" onScroll={forceCheck}>
                 <div>
                     <Slider bannerList={bannerListJS}/>
                     <RecommendList recommendList={recommendListJS}/>
