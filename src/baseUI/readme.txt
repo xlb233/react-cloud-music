@@ -1,1 +1,3 @@
 baseUI目录下存放一些很多页面都需要用的组件
+scroll滚动条组件
+horizon-item横向分类列表组件
