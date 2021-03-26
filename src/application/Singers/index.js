@@ -17,6 +17,9 @@ import {
 } from "./store/actionCreators";
 import {connect} from 'react-redux';
 
+// 懒加载
+import LazyLoad, {forceCheck} from 'react-lazyload';
+
 function Singers(props) {
     const [styled, setStyled] = useState('') // 存key值，仅用于更新选中样式
     // 剩下三个钩子用于处理筛选更新handleUpdate函数
@@ -95,11 +98,12 @@ function Singers(props) {
                         return (
                             <ListItem key={item.id}>
                                 <div className="img_wrapper">
-                                    <img src={`${item.picUrl}?param=300x300`} width="100%" height="100%" alt="music"/>
+                                    <LazyLoad placeholder={<img width="100%" height="100%" src={require('./singer.png')} alt="music"/>}>
+                                        <img src={`${item.picUrl}?param=300x300`} width="100%" height="100%" alt="music"/>
+                                    </LazyLoad>
                                 </div>
                                 <span className="name">{item.name}</span>
                             </ListItem>
-
                         )
                     })
                 }
@@ -126,6 +130,7 @@ function Singers(props) {
                 <Scroll
                     pullUpLoading={pullUpLoading}
                     pullDownLoading={pullDownLoading}
+                    onScroll={forceCheck}
                 >
                     {renderSingerList()}
                 </Scroll>
