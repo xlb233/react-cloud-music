@@ -1,169 +1,201 @@
 // 歌手种类
-export const categoryTypes = [{
-    name: "华语男",
-    key: "1001"
-},
+export const categoryTypes = [
+    {
+        name: "华语男",
+        key: "1001",
+        type: "1",
+        language: "7"
+    },
     {
         name: "华语女",
-        key: "1002"
+        key: "1002",
+        type: "2",
+        language: "7"
     },
     {
         name: "华语组合",
-        key: "1003"
+        key: "1003",
+        type: "3",
+        language: "7"
     },
     {
         name: "欧美男",
-        key: "2001"
+        key: "2001",
+        type: "1",
+        language: "96"
     },
     {
         name: "欧美女",
-        key: "2002"
+        key: "2002",
+        type: "2",
+        language: "96"
     },
     {
         name: "欧美组合",
-        key: "2003"
+        key: "2003",
+        type: "3",
+        language: "96"
     },
     {
         name: "日本男",
-        key: "6001"
+        key: "6001",
+        type: "1",
+        language: "8"
     },
     {
         name: "日本女",
-        key: "6002"
+        key: "6002",
+        type: "2",
+        language: "8"
     },
     {
         name: "日本组合",
-        key: "6003"
+        key: "6003",
+        type: "3",
+        language: "8"
     },
     {
         name: "韩国男",
-        key: "7001"
+        key: "7001",
+        type: "1",
+        language: "16"
     },
     {
         name: "韩国女",
-        key: "7002"
+        key: "7002",
+        type: "2",
+        language: "16"
     },
     {
         name: "韩国组合",
-        key: "7003"
+        key: "7003",
+        type: "3",
+        language: "16"
     },
     {
         name: "其他男歌手",
-        key: "4001"
+        key: "4001",
+        type: "1",
+        language: "0"
     },
     {
         name: "其他女歌手",
-        key: "4002"
+        key: "4002",
+        type: "2",
+        language: "0"
     },
     {
         name: "其他组合",
-        key: "4003"
+        key: "4003",
+        type: "3",
+        language: "0"
     },
 ];
 
 // 歌手首字母
-export const alphaTypes = [{
-    key: "A",
-    name: "A"
-},
+export const alphaTypes = [
+    {
+        key: "A",
+        initial: "A"
+    },
     {
         key: "B",
-        name: "B"
+        initial: "B"
     },
     {
         key: "C",
-        name: "C"
+        initial: "C"
     },
     {
         key: "D",
-        name: "D"
+        initial: "D"
     },
     {
         key: "E",
-        name: "E"
+        initial: "E"
     },
     {
         key: "F",
-        name: "F"
+        initial: "F"
     },
     {
         key: "G",
-        name: "G"
+        initial: "G"
     },
     {
         key: "H",
-        name: "H"
+        initial: "H"
     },
     {
         key: "I",
-        name: "I"
+        initial: "I"
     },
     {
         key: "J",
-        name: "J"
+        initial: "J"
     },
     {
         key: "K",
-        name: "K"
+        initial: "K"
     },
     {
         key: "L",
-        name: "L"
+        initial: "L"
     },
     {
         key: "M",
-        name: "M"
+        initial: "M"
     },
     {
         key: "N",
-        name: "N"
+        initial: "N"
     },
     {
         key: "O",
-        name: "O"
+        initial: "O"
     },
     {
         key: "P",
-        name: "P"
+        initial: "P"
     },
     {
         key: "Q",
-        name: "Q"
+        initial: "Q"
     },
     {
         key: "R",
-        name: "R"
+        initial: "R"
     },
     {
         key: "S",
-        name: "S"
+        initial: "S"
     },
     {
         key: "T",
-        name: "T"
+        initial: "T"
     },
     {
         key: "U",
-        name: "U"
+        initial: "U"
     },
     {
         key: "V",
-        name: "V"
+        initial: "V"
     },
     {
         key: "W",
-        name: "W"
+        initial: "W"
     },
     {
         key: "X",
-        name: "X"
+        initial: "X"
     },
     {
         key: "Y",
-        name: "Y"
+        initial: "Y"
     },
     {
         key: "Z",
-        name: "Z"
+        initial: "Z"
     }
 ];

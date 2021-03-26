@@ -1,7 +1,7 @@
 // 具体的action在此处定义
 import * as actionTypes from "./constants" // 引入各action类型
 import {fromJS} from "immutable";
-import {getBannerRequest, getRecommendRequest} from "../../../api/request";
+import {getBannerRequest, getRecommendRequest} from "../../../api/request"; // 引入request,以在数据发生改变时发送请求，获取回复以改变数据
 
 export const changeBannerList = (data) => ({ // banner改变的action
     type: actionTypes.CHANGE_BANNER,

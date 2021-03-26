@@ -59,9 +59,10 @@ function HorizonList(props) {
                                 <ListItem
                                     key={item.key}
                                     className={`${styleVal === item.key ? 'selected' : ''}`}
-                                    onClick={() => handleClick (item.key)}
+                                    onClick={() => handleClick (item.key, item.type, item.language, item.initial)}
                                     >
-                                    {item.name}
+                                    {/*若有name，则渲染item.name, 否则渲染item.initial*/}
+                                    {item.name || item.initial}
                                 </ListItem>
                             )
                         })
