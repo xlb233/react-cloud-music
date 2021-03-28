@@ -1,5 +1,5 @@
 // 歌手页面组件
-import React, {useState, useEffect} from "react"
+import React, {useState, useEffect, useContext} from "react"
 import HorizonList from "../../baseUI/horizonList"; //
 import {categoryTypes, alphaTypes} from "../../api/constant"
 import {NavContainer, ListContainer, List, ListItem} from "./style"
@@ -17,75 +17,102 @@ import {
 } from "./store/actionCreators";
 import {connect} from 'react-redux';
 
+import {contextSinger} from "./data";
+import {CHANGE_STYLE, CHANGE_TYPE, CHANGE_AREA, CHANGE_ALPHA} from "./data";
+
+
 // 懒加载
 import LazyLoad, {forceCheck} from 'react-lazyload';
 
 function Singers(props) {
-    const [styled, setStyled] = useState('') // 存key值，仅用于更新选中样式
+    // const [styled, setStyled] = useState('') // 存key值，仅用于更新选中样式
     // 剩下三个钩子用于处理筛选更新handleUpdate函数
-    const [type, setType] = useState('')
-    const [area, setArea] = useState('')
-    const [alpha, setAlpha] = useState('')
-    // horizonList组件中点击后的事件回调，改变样式为选中状态
-    // const handleUpdateAlpha = (styleVal) => {
-    //     setAlpha(styleVal)
-    // }
-    // const handleUpdateType = (styleVal) => {
-    //     setType(styleVal)
-    // }
-    // const handleUpdateArea = (styleVal) => {
-    //     setType(styleVal)
-    // }
+    // const [type, setType] = useState('')
+    // const [area, setArea] = useState('')
+    // const [alpha, setAlpha] = useState('')
+
+    // useContext钩子实现类似redux的功能
+    const {data, dispatch} = useContext(contextSinger)
+    const {style, type, alpha, area} = data.toJS()
+    console.log(data.toJS())
     const {singerList, enterLoading, pullUpLoading, pullDownLoading, pageCount} = props;
 
     const {getHotSingerDispatch, updateDispatch, pullDownRefreshDispatch, pullUpRefreshDispatch} = props;
-    // 歌手列表组件
-    // 歌手列表的mock 数据
-    // const singerList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(item => {
-    //     return {
-    //         picUrl: "https://p2.music.126.net/uTwOm8AEFFX_BYHvfvFcmQ==/109951164232057952.jpg",
-    //         name: "隔壁老樊",
-    //         accountId: 277313426,
-    //     }
-    // });
     useEffect(() => {
-        getHotSingerDispatch();
-        // eslint-disable-next-line
+        if (!singerList.size) {
+            if (style && type && area && alpha) {
+                console.log("有东西")
+                updateDispatch(type, area, alpha);
+            } else {
+                getHotSingerDispatch ();
+            }
+        }
     }, []);
 
     let handleUpdateAlpha = (_style, _type, _area, _alpha) => {
-        setStyled(_style);
-        setAlpha(_alpha)
+        // setStyled(_style);
+        // setAlpha(_alpha)
+        // if (!_type) {
+        //     if (type) {
+        //         _type = type
+        //     } else {
+        //         _type = "-1"
+        //         setType(_type)
+        //     }
+        // }
+        // if (!_area) {
+        //     if (area) {
+        //         _area = area
+        //     } else {
+        //         _area = "-1"
+        //         setArea(_area)
+        //     }
+        // }
+
         if (!_type) {
             if (type) {
-                _type = type
+                dispatch({type: CHANGE_TYPE, data: type})
             } else {
-                _type = "-1"
-                setType(_type)
+                dispatch({type: CHANGE_TYPE, data: '-1'})
             }
         }
+        _type = _type || type || "-1"
         if (!_area) {
             if (area) {
-                _area = area
+                dispatch({type: CHANGE_AREA, data: area})
             } else {
-                _area = "-1"
-                setArea(_area)
+                dispatch({type: CHANGE_AREA, data: '-1'})
             }
         }
+        _area = _area || area || "-1"
+        dispatch({type: CHANGE_STYLE, data: _style})
+        dispatch({type: CHANGE_ALPHA, data: _alpha})
         updateDispatch(_type, _area, _alpha);
     };
     let handleUpdateType = (_style, _type, _area, _alpha) => {
-        setStyled(_style)
-        setType(_type)
-        setArea(_area)
+        // setStyled(_style)
+        // setType(_type)
+        // setArea(_area)
+        // if (!_alpha) {
+        //     if (alpha) {
+        //         _alpha = alpha
+        //     } else {
+        //         _alpha = "a"
+        //         setAlpha(_alpha)
+        //     }
+        // }
         if (!_alpha) {
             if (alpha) {
-                _alpha = alpha
+                dispatch({type: CHANGE_ALPHA, data: alpha})
             } else {
-                _alpha = "a"
-                setAlpha(_alpha)
+                dispatch({type: CHANGE_ALPHA, data: 'a'})
             }
         }
+        _alpha = _alpha || alpha || "a"
+        dispatch({type: CHANGE_STYLE, data: _style})
+        dispatch({type: CHANGE_TYPE, data: _type})
+        dispatch({type: CHANGE_AREA, data: _area})
+        console.log("this is " + _style + " " + _type +  " " + _area + " " + _alpha)
         updateDispatch(_type, _area, _alpha);
     };
 
@@ -98,8 +125,10 @@ function Singers(props) {
                         return (
                             <ListItem key={item.id}>
                                 <div className="img_wrapper">
-                                    <LazyLoad placeholder={<img width="100%" height="100%" src={require('./singer.png')} alt="music"/>}>
-                                        <img src={`${item.picUrl}?param=300x300`} width="100%" height="100%" alt="music"/>
+                                    <LazyLoad placeholder={<img width="100%" height="100%" src={require('./singer.png')}
+                                                                alt="music"/>}>
+                                        <img src={`${item.picUrl}?param=300x300`} width="100%" height="100%"
+                                             alt="music"/>
                                     </LazyLoad>
                                 </div>
                                 <span className="name">{item.name}</span>
@@ -117,13 +146,13 @@ function Singers(props) {
                 list={categoryTypes}
                 title={"分类 (默认热门):"}
                 handleClick={handleUpdateType}
-                styleVal={styled}
+                styleVal={style}
             />
             <HorizonList
                 list={alphaTypes}
                 title={"首字母:"}
                 handleClick={handleUpdateAlpha}
-                styleVal={styled}
+                styleVal={style}
             />
             {/*在./style.js中定义*/}
             <ListContainer>
@@ -158,6 +187,7 @@ const mapDispatchToProps = (dispatch) => {
         updateDispatch(type, area, alpha) {
             dispatch(changePageCount(0));//由于改变了分类，所以pageCount清零
             dispatch(changeEnterLoading(true));//loading，现在实现控制逻辑，效果实现放到下一节，后面的loading同理
+            // console.log("args been dispatched " + ' ' + type + ' ' + area + " " + alpha )
             dispatch(getSingerList(type, area, alpha));
         },
         // 滑到最底部刷新部分的处理
