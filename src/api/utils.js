@@ -1,3 +1,6 @@
+import { RankTypes } from "./constant";
+
+
 // getCount函数，是一个工具函数，用于给播放量等数字增加单位，将用在推荐列表等多个组件中
 export const getCount = (count) => {
     if (count < 0) return;
@@ -23,3 +26,21 @@ export const debounce = (func, delay) => {
         }, delay)
     }
 }
+
+
+//处理数据，找出第一个没有歌名的排行榜的索引，即全球榜的开头位置
+export const filterIndex = rankList => {
+    for (let i = 0; i < rankList.length - 1; i++) {
+        if (rankList[i].tracks.length && !rankList[i + 1].tracks.length) {
+            return i + 1;
+        }
+    }
+};
+
+//找出排行榜的编号
+export const filterIdx = name => {
+    for (let key in RankTypes) {
+        if (RankTypes[key] === name) return key;
+    }
+    return null;
+};
