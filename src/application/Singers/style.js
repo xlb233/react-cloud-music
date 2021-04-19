@@ -29,8 +29,8 @@ export const List = styled.div`
 
   .title {
     margin: 10px 0 10px 10px;
-    color: ${style ["font-color-desc"]};
-    font-size: ${style ["font-size-s"]};
+    color: ${style["font-color-desc"]};
+    font-size: ${style["font-size-s"]};
   }
 `;
 export const ListItem = styled.div`
@@ -53,8 +53,8 @@ export const ListItem = styled.div`
   }
 
   .name {
-    font-size: ${style ["font-size-m"]};
-    color: ${style ["font-color-desc"]};
+    font-size: ${style["font-size-m"]};
+    color: ${style["font-color-desc"]};
     font-weight: 500;
   }
 `;

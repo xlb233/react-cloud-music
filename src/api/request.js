@@ -20,6 +20,10 @@ export const getSingerListRequest = (type, area, alpha, offset) => { // 根据�
     )
 }
 
-export const getRankListRequest = () => {
+export const getRankListRequest = () => { // 获取排名
     return axiosInstance.get('/toplist/detail')
+}
+
+export const getAlbumDetailRequest = id => { // 获取歌单详情
+    return axiosInstance.get(`/playlist/detail?id=${id}`)
 }

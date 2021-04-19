@@ -7,7 +7,9 @@ import Home from '../application/Home';
 // 推荐、歌手、排名等分别是具体的功能组件
 import Recommend from '../application/Recommend';
 import Singers from '../application/Singers';
+import Singer from  '../application/Singer';
 import Rank from '../application/Rank';
+import Album from "../application/Album";
 
 export default [
   {
@@ -23,14 +25,34 @@ export default [
       },
       {
         path: "/recommend",
-        component: Recommend
+        component: Recommend,
+        // 子路由
+        routes: [
+          {
+            path: "/recommend/:id",
+            component: Album
+          }
+        ]
       },
       {
         path: "/singers",
-        component: Singers
+        component: Singers,
+        key:"singers",
+        routes: [
+          {
+            path: "/singers/:id",
+            component: Singer
+          }
+        ]
       },
       {
         path: "/rank",
+        routes: [
+          {
+            path: "/rank/:id",
+            component: Album
+          }
+        ],
         component: Rank
       }
     ]

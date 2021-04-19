@@ -32,9 +32,9 @@
 // export default connect(mapStateToProps, mapDispatchToProps)(React.memo (Rank));
 
 
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { getRankList } from "./store/actionCreators";
+import React, {useEffect} from 'react';
+import {connect} from 'react-redux';
+import {getRankList} from "./store/actionCreators";
 import Loading from '../../baseUI/loading';
 import {
   List,
@@ -43,18 +43,18 @@ import {
   Container
 } from './style';
 import Scroll from '../../baseUI/scroll/index';
-import { filterIndex, filterIdx } from '../../api/utils';
-import { renderRoutes } from 'react-router-config';
+import {filterIndex} from '../../api/utils';
+import {renderRoutes} from 'react-router-config';
 
 function Rank(props) {
-  const { rankList:list, loading } = props;
+  const {rankList: list, loading} = props;
 
-  const { getRankListDataDispatch } = props;
+  const {getRankListDataDispatch} = props;
 
   let rankList = list ? list.toJS() : [];
 
   useEffect(() => {
-    if(!rankList.length){
+    if (!rankList.length) {
       getRankListDataDispatch();
     }
     // eslint-disable-next-line
@@ -68,60 +68,56 @@ function Rank(props) {
   let globalList = rankList.slice(globalStartIndex);
 
   // 进入详情页面预留接口
-  const enterDetail = (name) => {
-    const idx = filterIdx(name);
-    if(idx === null) {
-      alert("暂无相关数据");
-      return;
-    }
+  const enterDetail = (detail) => {
+    props.history.push(`/rank/${detail.id}`)
   }
   // 官方榜的右侧歌曲列表
   const renderSongList = (list) => {
     return list.length ? (
-        <SongList>
-          {
-            list.map((item, index) => {
-              return <li key={item.first + item.second}>{index+1}. {item.first} - {item.second}</li>
-            })
-          }
-        </SongList>
+      <SongList>
+        {
+          list.map((item, index) => {
+            return <li key={item.first + item.second}>{index + 1}. {item.first} - {item.second}</li>
+          })
+        }
+      </SongList>
     ) : null;
   }
   const renderRankList = (list, global) => {
     return (
-        <List globalRank={global}>
-          {
-            list.map((item) => {
-              return (
-                  <ListItem key={item.coverImgUrl} tracks={item.tracks} onClick={() => enterDetail(item.name)}>
-                    <div className="img_wrapper">
-                      <img src={item.coverImgUrl} alt=""/>
-                      <div className="decorate"/>
-                      <span className="update_frequency">{item.updateFrequency}</span>
-                    </div>
-                    { renderSongList(item.tracks)  }
-                  </ListItem>
-              )
-            })
-          }
-        </List>
+      <List globalRank={global}>
+        {
+          list.map((item) => {
+            return (
+              <ListItem key={item.coverImgUrl} tracks={item.tracks} onClick={() => enterDetail(item)}>
+                <div className="img_wrapper">
+                  <img src={item.coverImgUrl} alt=""/>
+                  <div className="decorate"/>
+                  <span className="update_frequency">{item.updateFrequency}</span>
+                </div>
+                {renderSongList(item.tracks)}
+              </ListItem>
+            )
+          })
+        }
+      </List>
     )
   }
 
-  let displayStyle = loading ? {"display":"none"}:  {"display": ""};
+  let displayStyle = loading ? {"display": "none"} : {"display": ""};
   return (
-      <Container>
-        <Scroll>
-          <div>
-            <h1 className="offical" style={displayStyle}>官方榜</h1>
-            { renderRankList(officialList) }
-            <h1 className="global" style={displayStyle}>全球榜</h1>
-            { renderRankList(globalList, true) }
-            { loading ? <Loading></Loading> : null }
-          </div>
-        </Scroll>
-        {renderRoutes(props.route.routes)}
-      </Container>
+    <Container>
+      <Scroll>
+        <div>
+          <h1 className="offical" style={displayStyle}>官方榜</h1>
+          {renderRankList(officialList)}
+          <h1 className="global" style={displayStyle}>全球榜</h1>
+          {renderRankList(globalList, true)}
+          {loading ? <Loading></Loading> : null}
+        </div>
+      </Scroll>
+      {renderRoutes(props.route.routes)}
+    </Container>
   );
 }
 

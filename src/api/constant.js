@@ -227,3 +227,6 @@ export const RankTypes = {
     "22": "云音乐ACG音乐榜",
     "23": "江小白YOLO云音乐说唱榜"
 };
+
+// HEADER的高度
+export const HEADER_HEIGHT = 45;
