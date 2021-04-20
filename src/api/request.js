@@ -27,3 +27,8 @@ export const getRankListRequest = () => { // 获取排名
 export const getAlbumDetailRequest = id => { // 获取歌单详情
     return axiosInstance.get(`/playlist/detail?id=${id}`)
 }
+
+export const getSingerInfoRequest = id => { // 获取歌手详情页面
+    return axiosInstance.get(`/artists?id=${id}`)
+}
+

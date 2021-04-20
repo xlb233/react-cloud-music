@@ -21,6 +21,7 @@ const LoadingWrapper = styled.div`
     margin: auto;
     width: 60px;
     height: 60px;
+    z-index: 1000;
     opacity: 0.6;
     border-radius: 50%;
     background-color: ${style["theme-color"]};

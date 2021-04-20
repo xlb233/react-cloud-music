@@ -47,7 +47,6 @@ export const filterIdx = name => {
 
 // 处理歌手列表拼接歌手名字
 export const getName = list => {
-    console.log('list')
     let str = "";
     list.map ((item, index) => {
         str += index === 0 ? item.name : "/" + item.name;
