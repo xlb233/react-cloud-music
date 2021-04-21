@@ -7,56 +7,56 @@ import Slider from "../../components/slider" // 引入banner轮播组件
 import RecommendList from "../../components/list" // 引入推荐列表组件
 import Scroll from '../../baseUI/scroll/index'; // 引入better-scroll插件
 import {Content} from "./style";
-import { forceCheck } from 'react-lazyload';
+import {forceCheck} from 'react-lazyload';
 import {renderRoutes} from "react-router-config";
 
 function Recommend(props) {
-    const {bannerList, recommendList} = props;
+  const {bannerList, recommendList} = props;
 
-    const {getBannerDataDispatch, getRecommendListDataDispatch} = props;
+  const {getBannerDataDispatch, getRecommendListDataDispatch} = props;
 
-    useEffect(() => {
-        if(!bannerList.length){
-            getBannerDataDispatch();// 若已经有数据，就不再请求，可减少请求次数，提高性能
-        }
-        if(!recommendList.length) {
-            getRecommendListDataDispatch();
-        }
-        //eslint-disable-next-line
-    }, []);
+  useEffect(() => {
+    if (!bannerList.length) {
+      getBannerDataDispatch();// 若已经有数据，就不再请求，可减少请求次数，提高性能
+    }
+    if (!recommendList.length) {
+      getRecommendListDataDispatch();
+    }
+    //eslint-disable-next-line
+  }, []);
 
-    const bannerListJS = bannerList ? bannerList.toJS() : [];
-    const recommendListJS = recommendList ? recommendList.toJS() : [];
+  const bannerListJS = bannerList ? bannerList.toJS() : [];
+  const recommendListJS = recommendList ? recommendList.toJS() : [];
 
-    return (
-        <Content>
-            {renderRoutes(props.route.routes)}
-            {/*使用forceCheck函数，实现滑动到哪哪才加载的效果*/}
-            <Scroll className="list" onScroll={forceCheck}>
-                <div>
-                    <Slider bannerList={bannerListJS}/>
-                    <RecommendList recommendList={recommendListJS}/>
-                </div>
-            </Scroll>
-        </Content>
-    )
+  return (
+    <Content>
+      {renderRoutes(props.route.routes)}
+      {/*使用forceCheck函数，实现滑动到哪哪才加载的效果*/}
+      <Scroll className="list" onScroll={forceCheck}>
+        <div>
+          <Slider bannerList={bannerListJS}/>
+          <RecommendList recommendList={recommendListJS}/>
+        </div>
+      </Scroll>
+    </Content>
+  )
 }
 
 const mapStateToProps = (state) => ({ // 映射全局state到recommend组件的props上
-    bannerList: state.getIn(['recommend', 'bannerList']),
-    recommendList: state.getIn(['recommend', 'recommendList']),
+  bannerList: state.getIn(['recommend', 'bannerList']),
+  recommendList: state.getIn(['recommend', 'recommendList']),
 })
 
 // 映射 dispatch 到 props 上
 const mapDispatchToProps = (dispatch) => {
-    return {
-        getBannerDataDispatch() {
-            dispatch(actionTypes.getBannerList());
-        },
-        getRecommendListDataDispatch() {
-            dispatch(actionTypes.getRecommendList());
-        },
-    }
+  return {
+    getBannerDataDispatch() {
+      dispatch(actionTypes.getBannerList());
+    },
+    getRecommendListDataDispatch() {
+      dispatch(actionTypes.getRecommendList());
+    },
+  }
 };
 
 

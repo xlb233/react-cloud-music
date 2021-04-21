@@ -1,6 +1,6 @@
 import style from "../../assets/global-style"
 import React, {useEffect, useRef, useState, useCallback} from "react";
-import {Container, TopDesc, Menu, SongItem, SongList} from "./style";
+import {Container, TopDesc, Menu} from "./style";
 // react-transition-group是常用第三方动画库
 import {CSSTransition} from 'react-transition-group'
 // 引入header组件
@@ -12,7 +12,7 @@ import Scroll from "../../baseUI/scroll";
 
 import {connect} from "react-redux";
 
-import {getName, getCount, isEmptyObject} from "../../api/utils"
+import {isEmptyObject} from "../../api/utils"
 import {getAlbumList, changeEnterLoading} from "./store/actionCreators";
 import Loading from '../../baseUI/loading/index';
 
