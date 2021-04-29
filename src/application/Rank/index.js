@@ -1,37 +1,3 @@
-// import React, { useEffect } from 'react';
-// import { connect } from "react-redux";
-// import { getRankList } from "./store/actionCreators";
-// import Loading from '../../baseUI/loading'
-//
-// function Rank (props) {
-//   const { rankList:list, loading } = props
-//   const { getRankListDataDispatch } = props
-//   let rankList = list ? list.toJS() : []
-//   useEffect(() => {
-//     getRankListDataDispatch()
-//   }, []) // 此处useEffect的第二个参数是一个空数组，表示副作用参数没有任何依赖项，只会在组件mount时执行一次，以后的重新渲染不会再执行
-//
-//   return (
-//     <div>Rank</div>
-//   )
-// }
-//
-// const mapStateToProps = (state) => ({
-//   rankList: state.getIn(['rank', 'rankList']),
-//   loading: state.getIn(['rank', 'loading']),
-// });
-//
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     getRankListDataDispatch() {
-//       dispatch(getRankList())
-//     }
-//   }
-// }
-//
-// export default connect(mapStateToProps, mapDispatchToProps)(React.memo (Rank));
-
-
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import {getRankList} from "./store/actionCreators";
@@ -47,7 +13,7 @@ import {filterIndex} from '../../api/utils';
 import {renderRoutes} from 'react-router-config';
 
 function Rank(props) {
-  const {rankList: list, loading} = props;
+  const {rankList: list, loading, playlistCount} = props;
 
   const {getRankListDataDispatch} = props;
 
@@ -106,7 +72,7 @@ function Rank(props) {
 
   let displayStyle = loading ? {"display": "none"} : {"display": ""};
   return (
-    <Container>
+    <Container playlistLength={playlistCount}>
       <Scroll>
         <div>
           <h1 className="offical" style={displayStyle}>官方榜</h1>
@@ -125,6 +91,7 @@ function Rank(props) {
 const mapStateToProps = (state) => ({
   rankList: state.getIn(['rank', 'rankList']),
   loading: state.getIn(['rank', 'loading']),
+  playlistCount: state.getIn(['player', 'playlist']).size,
 });
 // 映射dispatch到props上
 const mapDispatchToProps = (dispatch) => {

@@ -5,6 +5,7 @@ import style from '../../assets/global-style';
 
 export const ListWrapper = styled.div` // 创建一个有如下属性的div
   max-width: 100%;
+  bottom: ${props => props.playlistLength > 0 ? '60px' : 0};
   .title {
     font-weight: 700;
     padding-left: 6px;

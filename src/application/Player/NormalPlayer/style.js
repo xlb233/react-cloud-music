@@ -9,7 +9,7 @@ export const NormalPlayerContainer = styled.div`
   width: 100%;
   height: 100%;
   background: ${style["background-color"]};
-
+  z-index: 1000;
   &.normal-enter,
   &.normal-exit-done {
     .top {

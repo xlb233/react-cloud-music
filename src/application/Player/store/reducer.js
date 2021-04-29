@@ -7,7 +7,7 @@ const defaultState = fromJS({
   playing: false, // 是否播放当前
   sequencePlaylist: [], // 当前顺序播放列表
   playlist: [], // 播放列表
-  mode: playMode.sequence, // 默认列表顺序播放
+  mode: playMode.sequence, // 默认列表顺序播放 0：顺序播放 1：单曲循环 2：随机播放
   currentIndex: -1, // 当前歌曲在播放列表的索引
   showPlaylist: false, // 是否显示当前播放列表
   currentSong: {},
@@ -26,7 +26,7 @@ export default (state = defaultState, action) => {
     case actionTypes.SET_PLAYLIST:
       return state.set ('playlist', action.data);
     case actionTypes.SET_PLAY_MODE:
-      return state.set ('playMode', action.data);
+      return state.set ('mode', action.data);
     case actionTypes.SET_CURRENT_INDEX:
       return state.set ('currentIndex', action.data);
     case actionTypes.SET_SHOW_PLAYLIST:

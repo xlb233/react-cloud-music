@@ -11,6 +11,7 @@ import { withRouter } from "react-router-dom";
 import placeHolder from "../../assets/placeholders/music.png"
 
 function RecommendList (props) {
+  const {playlistLength} = props;
   const enterDetail = (id) => {
       props.history.push(`/recommend/${id}`)
   }
@@ -23,7 +24,7 @@ function RecommendList (props) {
             return (
               <ListItem key={item.id} onClick={()=>enterDetail(item.id)}>
                 <div className="img_wrapper">
-                  <div className="decorate"></div>
+                  <div className="decorate" />
                     {/*LazyLoad标签，用占位图片实现图片懒加载*/}
                     <LazyLoad placeholder={<img width="100%" height="100%" src={placeHolder} alt="music"/>}>
                         {/* 加此参数可以减小请求的图片资源大小 */}

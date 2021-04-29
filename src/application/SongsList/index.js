@@ -3,11 +3,21 @@ import React from "react";
 import {SongList, SongItem} from "./style"
 import {getName} from "../../api/utils";
 
+import {changePlaylist, changeCurrentIndex, changeSequencePlaylist} from "../Player/store/actionCreators";
+import {connect} from "react-redux";
+
+
 const SongsList = React.forwardRef((props, ref) => {
-  const {collectCount, showCollect, songs} = props;
+  const {collectCount, showCollect, songs, playlistLength} = props;
+  const { musicNoteAnimation } = props; // 点击后的音符陨落动画
+  const {changePlaylistDispatch, changeCurrentIndexDispatch, changeSequencePlaylistDispatch} = props;
   const totalCount = songs.length;
+  // 点击歌曲后的事件
   const selectItem = (e, index) => {
-    console.log(index)
+    changePlaylistDispatch(songs);
+    changeSequencePlaylistDispatch(songs);
+    changeCurrentIndexDispatch(index);
+    musicNoteAnimation(e.nativeEvent.clientX, e.nativeEvent.clientY); // 从点击事件触发的位置播放音符陨落动画
   }
   // 歌曲列表
   const songList = (list) => {
@@ -56,4 +66,18 @@ const SongsList = React.forwardRef((props, ref) => {
   )
 })
 
-export default React.memo(SongsList)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changePlaylistDispatch(data) {
+      dispatch(changePlaylist(data));
+    },
+    changeSequencePlaylistDispatch(data) {
+      dispatch(changeSequencePlaylist(data));
+    },
+    changeCurrentIndexDispatch(data) {
+      dispatch(changeCurrentIndex(data));
+    }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(React.memo(SongsList))

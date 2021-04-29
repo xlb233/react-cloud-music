@@ -11,8 +11,7 @@ import {forceCheck} from 'react-lazyload';
 import {renderRoutes} from "react-router-config";
 
 function Recommend(props) {
-  const {bannerList, recommendList} = props;
-
+  const {bannerList, recommendList, playlistCount} = props; // playlistCount用来判断当前播放列表中是否有歌曲。
   const {getBannerDataDispatch, getRecommendListDataDispatch} = props;
 
   useEffect(() => {
@@ -29,13 +28,16 @@ function Recommend(props) {
   const recommendListJS = recommendList ? recommendList.toJS() : [];
 
   return (
-    <Content>
+    <Content playlistLength={playlistCount}>
       {renderRoutes(props.route.routes)}
       {/*使用forceCheck函数，实现滑动到哪哪才加载的效果*/}
       <Scroll className="list" onScroll={forceCheck}>
         <div>
           <Slider bannerList={bannerListJS}/>
-          <RecommendList recommendList={recommendListJS}/>
+          <RecommendList
+            recommendList={recommendListJS}
+            playlistLength={playlistCount}
+          />
         </div>
       </Scroll>
     </Content>
@@ -45,6 +47,7 @@ function Recommend(props) {
 const mapStateToProps = (state) => ({ // 映射全局state到recommend组件的props上
   bannerList: state.getIn(['recommend', 'bannerList']),
   recommendList: state.getIn(['recommend', 'recommendList']),
+  playlistCount: state.getIn(['player', 'playlist']).size,
 })
 
 // 映射 dispatch 到 props 上

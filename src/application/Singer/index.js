@@ -9,9 +9,10 @@ import {HEADER_HEIGHT} from "../../api/constant"
 import {connect} from "react-redux";
 import {getSingerInfo, changeEnterLoading} from "./store/actionCreators";
 import Loading from "../../baseUI/loading"
+import MusicNote from "../../baseUI/musicNote"; // 音符陨落组件
 
 function Singer(props) {
-  const {artist: immutableArtist, songs: immutableSongs, loading} = props;
+  const {artist: immutableArtist, songs: immutableSongs, loading, playlistCount} = props;
   const {getSingerDataDispatch} = props;
   const artist = immutableArtist.toJS();
   const songs = immutableSongs.toJS();
@@ -23,6 +24,10 @@ function Singer(props) {
   const bgLayer = useRef();
   const songScroll = useRef();
   const initialHeight = useRef(0);
+  const musicNoteRef = useRef();
+  const musicNoteAnimation = (x, y) => {
+    musicNoteRef.current.startAnimation({x, y})
+  }
   const OFFSET = 5;
 
   const setShowStatusFalse = useCallback(() => {
@@ -89,7 +94,7 @@ function Singer(props) {
       unmountOnExit
       onExited={props.history.goBack}
     >
-      <Container>
+      <Container playlistLength={playlistCount}>
         <Header
           title={artist.name}
           handleClick={setShowStatusFalse}
@@ -114,10 +119,12 @@ function Singer(props) {
             <SongsList
               songs={songs}
               showCollect={false}
+              musicNoteAnimation={musicNoteAnimation}
             />
           </Scroll>
         </SongListWrapper>
         {loading ? (<Loading/>) : null}
+        <MusicNote  ref={musicNoteRef}/>
       </Container>
     </CSSTransition>
   )
@@ -129,6 +136,7 @@ const mapStateToProps = state =>
     artist: state.getIn(["singerInfo", "artist"]),
     songs: state.getIn(["singerInfo", "songsOfArtist"]),
     loading: state.getIn(["singerInfo", "loading"]),
+    playlistCount: state.getIn(["player", "playlist"]).size,
   }
 }
 

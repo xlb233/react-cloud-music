@@ -92,11 +92,19 @@ export const MiniPlayerContainer = styled.div`
 
     .iconfont {
       font-size: 30px;
-      color: ${style ["theme-color"]};
+      color: ${style["theme-color"]};
     }
 
-    .modeControl {
 
+    .icon-mini {
+      font-size: 16px;
+      position: absolute;
+      top: 8px;
+      left: 8px;
+
+      &.icon-play {
+        left: 9px;
+      }
     }
 
     .listControl {

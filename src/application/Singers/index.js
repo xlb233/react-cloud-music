@@ -32,7 +32,7 @@ import Loading from "../../baseUI/loading";
 function Singers(props) {
   const {data, dispatch} = useContext(contextSinger)
   const {styleUpper, styleLower, type, alpha, area} = data.toJS()
-  const {singerList, enterLoading, pullUpLoading, pullDownLoading, pageCount} = props;
+  const {singerList, enterLoading, pullUpLoading, pullDownLoading, pageCount, playlistCount} = props;
   let styled = styleUpper || styleLower // 判断是否已经有选中过
   const {getHotSingerDispatch, updateDispatch, pullDownRefreshDispatch, pullUpRefreshDispatch} = props;
   useEffect(() => {
@@ -129,7 +129,7 @@ function Singers(props) {
           />
         </NavContainer>
         {/*在./style.js中定义*/}
-        <ListContainer>
+        <ListContainer playlistLength={playlistCount}>
           <Scroll
             pullUp={handlePullUp}
             pullDown={handlePullDown}
@@ -153,7 +153,8 @@ const mapStateToProps = (state) => {
     enterLoading: state.getIn(['singers', 'enterLoading']),
     pullUpLoading: state.getIn(['singers', 'pullUpLoading']),
     pullDownLoading: state.getIn(['singers', 'pullDownLoading']),
-    pageCount: state.getIn(['singers', 'pageCount'])
+    pageCount: state.getIn(['singers', 'pageCount']),
+    playlistCount: state.getIn(['player', 'playlist']).size,
   }
 }
 

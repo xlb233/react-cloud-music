@@ -15,16 +15,19 @@ import {connect} from "react-redux";
 import {isEmptyObject} from "../../api/utils"
 import {getAlbumList, changeEnterLoading} from "./store/actionCreators";
 import Loading from '../../baseUI/loading/index';
+import MusicNote from "../../baseUI/musicNote";
 
 function Album(props) {
   const [showStatus, setShowStatus] = useState(true)
   const [title, setTitle] = useState("歌单")
   const [isMarquee, setIsMarquee] = useState(false)
-  // headerContainer组件的ref
-  const headerEL = useRef()
-
+  const headerEL = useRef();   // headerContainer组件的ref
+  const musicNoteRef = useRef(); // 音符陨落组件的ref
+  const musicNoteAnimation = (x, y) => {
+    musicNoteRef.current.startAnimation({x, y});
+  };
   const id = props.match.params.id;
-  const {currentAlbum: currentAlbumImmutable, enterLoading} = props;
+  const {currentAlbum: currentAlbumImmutable, enterLoading, playlistCount} = props;
   const {getAlbumDataDispatch} = props;
   useEffect(() => {
     getAlbumDataDispatch(id);
@@ -116,7 +119,7 @@ function Album(props) {
       onExited={props.history.goBack}
     >
 
-      <Container>
+      <Container playlistLength={playlistCount}>
         <Header
           title={title}
           handleClick={handleBack}
@@ -131,7 +134,13 @@ function Album(props) {
               <div>
                 {renderTopDesc()}
                 {renderMenu()}
-                <SongsList collectCount={currentAlbum.subscribedCount} showCollect={true} songs={currentAlbum.tracks}/>
+                <SongsList
+                  collectCount={currentAlbum.subscribedCount}
+                  showCollect={true}
+                  songs={currentAlbum.tracks}
+                  musicNoteAnimation={musicNoteAnimation}
+                />
+                <MusicNote ref={musicNoteRef}/>
               </div>
             </Scroll>
             : null
@@ -145,7 +154,8 @@ function Album(props) {
 const mapStateToProps = (state) => {
   return {
     currentAlbum: state.getIn(['album', 'currentAlbum']),
-    enterLoading: state.getIn(['album', 'enterLoading'])
+    enterLoading: state.getIn(['album', 'enterLoading']),
+    playlistCount: state.getIn(['player', 'playlist']).size
   }
 }
 

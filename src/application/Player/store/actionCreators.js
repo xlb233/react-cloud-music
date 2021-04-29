@@ -32,10 +32,12 @@ export const changeSequencePlaylist = (data) => ({
   data: fromJS(data)
 });
 
-export const changePlaylist = (data) => ({
-  type: SET_PLAYLIST,
-  data: fromJS(data)
-});
+export const changePlaylist = (data) => {
+  return {
+    type: SET_PLAYLIST,
+    data: fromJS(data)
+  }
+};
 
 export const changePlayMode = (data) => ({
   type: SET_PLAY_MODE,
