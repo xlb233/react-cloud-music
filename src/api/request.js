@@ -21,14 +21,17 @@ export const getSingerListRequest = (type, area, alpha, offset) => { // 根据�
 }
 
 export const getRankListRequest = () => { // 获取排名
-    return axiosInstance.get('/toplist/detail')
+    return axiosInstance.get('/toplist/detail');
 }
 
 export const getAlbumDetailRequest = id => { // 获取歌单详情
-    return axiosInstance.get(`/playlist/detail?id=${id}`)
+    return axiosInstance.get(`/playlist/detail?id=${id}`);
 }
 
 export const getSingerInfoRequest = id => { // 获取歌手详情页面
-    return axiosInstance.get(`/artists?id=${id}`)
+    return axiosInstance.get(`/artists?id=${id}`);
 }
 
+export const getLyricRequest = id => { // 获取歌词
+    return axiosInstance.get(`/lyric?id=${id}`);
+}

@@ -1,18 +1,21 @@
-import React, {useEffect, useState, useRef, useCallback} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import MiniPlayer from "./MiniPlayer";
 import NormalPlayer from "./NormalPlayer";
 import Toast from "../../baseUI/toast";
-
+import Playlist from "./Playlist";
 import {
   changeCurrentIndex,
   changeCurrentSong,
   changeFullScreen,
-  changePlayingState, changePlaylist,
+  changePlayingState,
+  changePlaylist,
   changePlayMode,
   changeShowPlaylist
 } from './store/actionCreators';
 import {connect} from "react-redux";
 import {findIndex, getSongUrl, isEmptyObject, shuffle} from "../../api/utils";
+import {getLyricRequest} from "../../api/request";
+import LyricParser from "../../api/lyric-parser";
 
 function Player(props) {
   const {
@@ -35,19 +38,53 @@ function Player(props) {
   } = props;
   const audioRef = useRef();
   const toastRef = useRef();
+  const preSong = useRef({});
+  const currentLyric = useRef(''); // 当前整首歌的歌词
+  // const currentPlayingLyric = useRef('') // 当前正在播放的那一句歌词
+  const [currentPlayingLyric, setPlayingLyric] = useState('');
+  const currentPlayingLyricIndex = useRef(0) // 当前正在播放的那一句歌词所在下标
   const [currentTime, setCurrentTime] = useState(0) // 已播放时间
   const [duration, setDuration] = useState(0); // 歌曲总时长
-  const [preSong, setPreSong] = useState({}); // 判断当前歌曲是否与上一首歌一样
   const [modeText, setModeText] = useState("")
   const [songReady, setSongReady] = useState(true) // 判断是否马上播放下一首
+  // const [preSong, setPreSong] = useState({}); // 判断当前歌曲是否与上一首歌一样
 
   let percent = isNaN(currentTime / duration) ? 0 : currentTime / duration; // 已播放/总时长百分比
   const currentSong = immutableCurrentSong.toJS();
   const playlist = immutablePlaylist.toJS();
   playlist.count = 0; // 给playlist加一个count属性，每次切换播放列表时自增，按照playlist.count属性来作为useEffect的dependency
   const sequencePlaylist = immutableSequencePlaylist.toJS();
+
+  const handleLyric = (index, txt) => {
+    if(!currentLyric.current)return;
+    currentPlayingLyricIndex.current = index;
+    setPlayingLyric(txt);
+  }
+
+  const getLyric = (id) => {
+    let lyric = "";
+    // 避免切歌后上一首播放的歌曲歌词还在计时
+    if(currentLyric.current) {
+      currentLyric.current.stop();
+    }
+    getLyricRequest(id).then((data) => {
+      lyric = data.lrc.lyric;
+      if (!lyric) {
+        currentLyric.current = '';
+        return
+      }
+      // 解析整首歌词, 存入currentLyric.current变量
+      currentLyric.current = new LyricParser(lyric, handleLyric);
+      currentLyric.current.play(); // 使用LyricParser类的play方法进行播放
+      currentPlayingLyricIndex.current = 0;
+      currentLyric.current.seek(0);
+    }).catch(() => {
+      setSongReady(true);
+      audioRef.current.play();
+    })
+  }
+  // 加载播放器
   useEffect(() => {
-    console.log('useEffect被调用')
     if (
       !playlist.length ||
       currentIndex === -1 ||
@@ -58,7 +95,7 @@ function Player(props) {
       return;
     playlist.count += 1;
     let current = playlist[currentIndex];
-    setPreSong(current);
+    preSong.current = current;
     setSongReady(false);
     changeCurrentSongDispatch(current);//赋值currentSong
     audioRef.current.src = getSongUrl(current.id);
@@ -72,14 +109,23 @@ function Player(props) {
       });
     });
     togglePlayingDispatch(true);//播放状态
+    getLyric(current.id); // 播放一首歌只被调用一次
     setCurrentTime(0);//从头开始播放
     setDuration((current.dt / 1000) | 0);//时长
-  }, [playlist.count, currentIndex]);
+  }, [playlist.count, playlist.length, currentIndex]);
+
+  // 修正删除播放列表后当前歌曲仍在播放的bug
+  useEffect(() => {
+    (playingState && playlist.length) ? audioRef.current.play() : audioRef.current.pause();
+  }, [playingState, playlist.length])
 
   const clickPlaying = (e, state) => {
     state ? audioRef.current.play() : audioRef.current.pause();
     e.stopPropagation(); //阻止事件冒泡到容器上
     togglePlayingDispatch(state);
+    if (currentLyric.current) {
+      currentLyric.current.togglePlay(currentTime * 1000)
+    }
   }
 
   const updateTime = (e) => {
@@ -90,6 +136,9 @@ function Player(props) {
     const newTime = curPercent * duration;
     setCurrentTime(newTime);
     audioRef.current.currentTime = newTime; // 改变播放进度
+    if (currentLyric.current) {
+      currentLyric.current.seek(newTime * 1000);
+    }
   };
 
   // 单曲循环
@@ -159,7 +208,6 @@ function Player(props) {
       handleNext();
     }
   }
-
   return (
     <div>
       {
@@ -171,6 +219,7 @@ function Player(props) {
             percent={percent}
             clickPlaying={clickPlaying}
             toggleFullScreen={toggleFullScreenDispatch}
+            toggleShowPlaylist={toggleShowPlaylistDispatch}
           />
       }
       {
@@ -189,6 +238,11 @@ function Player(props) {
             handlePrev={handlePrev}
             handleNext={handleNext}
             handleChangeMode={handleChangeMode}
+            toggleShowPlaylist={toggleShowPlaylistDispatch}
+            currentLyric={currentLyric.current}
+            // currentPlayingLyric={currentPlayingLyric.current}
+            currentPlayingLyric={currentPlayingLyric}
+            currentPlayingLyricIndex={currentPlayingLyricIndex.current}
           />
       }
       <audio
@@ -196,6 +250,7 @@ function Player(props) {
         onTimeUpdate={updateTime}
         onEnded={handleEnd}
       />
+      <Playlist/>
       <Toast text={modeText} ref={toastRef}/>
     </div>
   )
@@ -223,6 +278,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(changeFullScreen(data))
     },
     toggleShowPlaylistDispatch(data) {
+      console.log(data)
       dispatch(changeShowPlaylist(data))
     },
     changeCurrentIndexDispatch(data) {

@@ -10,6 +10,7 @@ export const NormalPlayerContainer = styled.div`
   height: 100%;
   background: ${style["background-color"]};
   z-index: 1000;
+
   &.normal-enter,
   &.normal-exit-done {
     .top {
@@ -146,6 +147,15 @@ export const CdWrapper = styled.div`
       }
     }
   }
+
+  .playing_lyric {
+    margin-top: 20px;
+    font-size: 14px;
+    line-height: 20px;
+    white-space: normal;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+  }
 }
 `
 
@@ -192,5 +202,38 @@ export const Operators = styled.div`
 
   .icon-favorite {
     color: ${style["theme-color"]};
+  }
+`;
+
+export const LyricContainer = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+`;
+
+export const LyricWrapper = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+
+  p {
+    line-height: 32px;
+    color: rgba(255, 255, 255, 0.5);
+    white-space: normal;
+    font-size: ${style["font-size-l"]};
+
+    &.current {
+      color: #fff;
+    }
+
+    &.pure {
+      position: relative;
+      top: 30vh;
+    }
   }
 `;

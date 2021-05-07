@@ -1,4 +1,5 @@
 import {
+  DELETE_SONG,
   SET_CURRENT_INDEX,
   SET_CURRENT_SONG,
   SET_FULL_SCREEN,
@@ -22,10 +23,13 @@ export const changeFullScreen = (data) => ({
   data
 });
 
-export const changePlayingState = (data) => ({
-  type: SET_PLAYING_STATE,
-  data
-});
+export const changePlayingState = (data) => {
+  console.log('changePlayingState');
+  return {
+    type: SET_PLAYING_STATE,
+    data
+  }
+};
 
 export const changeSequencePlaylist = (data) => ({
   type: SET_SEQUENCE_PLAYLIST,
@@ -49,7 +53,16 @@ export const changeCurrentIndex = (data) => ({
   data
 });
 
-export const changeShowPlaylist = (data) => ({
-  type: SET_SHOW_PLAYLIST,
-  data
-});
+export const changeShowPlaylist = (data) => {
+  return {
+    type: SET_SHOW_PLAYLIST,
+    data
+  }
+};
+
+export const deleteSong = (data) => {
+  return {
+    type: DELETE_SONG,
+    data
+  }
+}
