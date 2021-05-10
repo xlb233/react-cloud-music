@@ -35,3 +35,19 @@ export const getSingerInfoRequest = id => { // 获取歌手详情页面
 export const getLyricRequest = id => { // 获取歌词
     return axiosInstance.get(`/lyric?id=${id}`);
 }
+
+export const getFreqSearchRequest = () => { // 获取热搜
+    return axiosInstance.get('/search/hot');
+}
+
+export const getSuggestListRequest = (queryString) => { // 输入时的推荐
+    return axiosInstance.get (`/search/suggest?keywords=${queryString}`);
+}
+
+export const getResultSongsListRequest = queryString => {
+    return axiosInstance.get (`/search?keywords=${queryString}`);
+};
+
+export const getSongDetailRequest = id => {
+    return axiosInstance.get (`/song/detail?ids=${id}`);
+};

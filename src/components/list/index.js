@@ -11,7 +11,6 @@ import { withRouter } from "react-router-dom";
 import placeHolder from "../../assets/placeholders/music.png"
 
 function RecommendList (props) {
-  const {playlistLength} = props;
   const enterDetail = (id) => {
       props.history.push(`/recommend/${id}`)
   }

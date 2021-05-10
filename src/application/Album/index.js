@@ -26,7 +26,8 @@ function Album(props) {
   const musicNoteAnimation = (x, y) => {
     musicNoteRef.current.startAnimation({x, y});
   };
-  const id = props.match.params.id;
+
+  const id = props.match.params.id; // 拿到url中的id字段以调用getAlbumDataDispatch发送请求
   const {currentAlbum: currentAlbumImmutable, enterLoading, playlistCount} = props;
   const {getAlbumDataDispatch} = props;
   useEffect(() => {

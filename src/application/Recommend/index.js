@@ -13,7 +13,6 @@ import {renderRoutes} from "react-router-config";
 function Recommend(props) {
   const {bannerList, recommendList, playlistCount} = props; // playlistCount用来判断当前播放列表中是否有歌曲。
   const {getBannerDataDispatch, getRecommendListDataDispatch} = props;
-
   useEffect(() => {
     if (!bannerList.length) {
       getBannerDataDispatch();// 若已经有数据，就不再请求，可减少请求次数，提高性能
@@ -21,7 +20,6 @@ function Recommend(props) {
     if (!recommendList.length) {
       getRecommendListDataDispatch();
     }
-    //eslint-disable-next-line
   }, []);
 
   const bannerListJS = bannerList ? bannerList.toJS() : [];
@@ -48,6 +46,7 @@ const mapStateToProps = (state) => ({ // 映射全局state到recommend组件的p
   bannerList: state.getIn(['recommend', 'bannerList']),
   recommendList: state.getIn(['recommend', 'recommendList']),
   playlistCount: state.getIn(['player', 'playlist']).size,
+  // shouldReRender: state.getIn(['recommend', 'shouldReRender'])
 })
 
 // 映射 dispatch 到 props 上

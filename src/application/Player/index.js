@@ -10,7 +10,7 @@ import {
   changePlayingState,
   changePlaylist,
   changePlayMode,
-  changeShowPlaylist
+  changeShowPlaylist,
 } from './store/actionCreators';
 import {connect} from "react-redux";
 import {findIndex, getSongUrl, isEmptyObject, shuffle} from "../../api/utils";
@@ -40,14 +40,12 @@ function Player(props) {
   const toastRef = useRef();
   const preSong = useRef({});
   const currentLyric = useRef(''); // 当前整首歌的歌词
-  // const currentPlayingLyric = useRef('') // 当前正在播放的那一句歌词
   const [currentPlayingLyric, setPlayingLyric] = useState('');
   const currentPlayingLyricIndex = useRef(0) // 当前正在播放的那一句歌词所在下标
   const [currentTime, setCurrentTime] = useState(0) // 已播放时间
   const [duration, setDuration] = useState(0); // 歌曲总时长
   const [modeText, setModeText] = useState("")
   const [songReady, setSongReady] = useState(true) // 判断是否马上播放下一首
-  // const [preSong, setPreSong] = useState({}); // 判断当前歌曲是否与上一首歌一样
 
   let percent = isNaN(currentTime / duration) ? 0 : currentTime / duration; // 已播放/总时长百分比
   const currentSong = immutableCurrentSong.toJS();
@@ -120,7 +118,8 @@ function Player(props) {
   }, [playingState, playlist.length])
 
   const clickPlaying = (e, state) => {
-    state ? audioRef.current.play() : audioRef.current.pause();
+    console.log('click playing')
+    state ? audioRef.current.play() : audioRef.current.pause(); // 根据当前播放状态确定播放和暂停
     e.stopPropagation(); //阻止事件冒泡到容器上
     togglePlayingDispatch(state);
     if (currentLyric.current) {
@@ -240,7 +239,6 @@ function Player(props) {
             handleChangeMode={handleChangeMode}
             toggleShowPlaylist={toggleShowPlaylistDispatch}
             currentLyric={currentLyric.current}
-            // currentPlayingLyric={currentPlayingLyric.current}
             currentPlayingLyric={currentPlayingLyric}
             currentPlayingLyricIndex={currentPlayingLyricIndex.current}
           />
@@ -292,7 +290,7 @@ const mapDispatchToProps = dispatch => {
     },
     changePlaylistDispatch(data) {
       dispatch(changePlaylist(data))
-    }
+    },
   }
 }
 
