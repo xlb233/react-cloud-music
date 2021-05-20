@@ -10,11 +10,16 @@ const defaultState = fromJS({
 export default (state = defaultState, action) => {
   switch (action.type) {
     case actionTypes.CHANGE_ARTIST:
-      return state.set ('artist', action.data);
+      return state.set('artist', action.data);
     case actionTypes.CHANGE_SONGS_OF_ARTIST:
-      return state.set ('songsOfArtist', action.data);
+      return state.set('songsOfArtist', action.data);
     case actionTypes.CHANGE_ENTER_LOADING:
-      return state.set ('loading', action.data);
+      return state.set('loading', action.data);
+    case actionTypes.CLEAR_SINGER_STATE:
+      return state.merge(fromJS({
+        'artist': {},
+        'songsOfArtist': []
+      }))
     default:
       return state;
   }

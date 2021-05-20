@@ -6,7 +6,7 @@ import {IconStyle} from "./assets/iconfont/iconfont";
 // 引入路由配置
 import routes from "./routes/index";
 import {renderRoutes} from 'react-router-config';//renderRoutes 读取路由配置转化为 Route 标签
-import {HashRouter} from 'react-router-dom';
+import {BrowserRouter, HashRouter} from 'react-router-dom';
 // 引入redux的store
 import store from "./store/index"
 // react-redux提供的根组件
@@ -15,17 +15,17 @@ import {Provider} from 'react-redux'
 import {Data} from "./application/Singers/data";
 
 function App() {
-    return (
-        <Provider store={store}>
-            <HashRouter>
-                <GlobalStyle></GlobalStyle>
-                <IconStyle></IconStyle>
-                <Data>
-                    {renderRoutes(routes)}
-                </Data>
-            </HashRouter>
-        </Provider>
-    );
+  return (
+    <Provider store={store}>
+      <BrowserRouter>
+        <GlobalStyle></GlobalStyle>
+        <IconStyle></IconStyle>
+        <Data>
+          {renderRoutes(routes)}
+        </Data>
+      </BrowserRouter>
+    </Provider>
+  );
 }
 
 export default App;

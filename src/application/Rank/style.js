@@ -8,7 +8,7 @@ export const Container = styled.div`
   top: 90px;
   bottom: ${props => props.playlistLength > 0 ? '60px' : 0};
   width: 100%;
-  .offical,.global {
+  .official,.global {
     margin: 10px 5px;
     padding-top: 15px;
     font-weight: 700;

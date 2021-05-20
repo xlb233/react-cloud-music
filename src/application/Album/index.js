@@ -13,23 +13,25 @@ import Scroll from "../../baseUI/scroll";
 import {connect} from "react-redux";
 
 import {isEmptyObject} from "../../api/utils"
-import {getAlbumList, changeEnterLoading} from "./store/actionCreators";
+import {getAlbumList, changeEnterLoading, clearAlbumState} from "./store/actionCreators";
 import Loading from '../../baseUI/loading/index';
 import MusicNote from "../../baseUI/musicNote";
 
 function Album(props) {
+  const {currentAlbum: currentAlbumImmutable, enterLoading, playlistCount} = props;
+  const {getAlbumDataDispatch, clearAlbumStateDispatch} = props;
+  const id = props.match.params.id; // 拿到url中的id字段以调用getAlbumDataDispatch发送请求
+
   const [showStatus, setShowStatus] = useState(true)
   const [title, setTitle] = useState("歌单")
-  const [isMarquee, setIsMarquee] = useState(false)
+  const isMarquee = useRef(false)
   const headerEL = useRef();   // headerContainer组件的ref
   const musicNoteRef = useRef(); // 音符陨落组件的ref
   const musicNoteAnimation = (x, y) => {
     musicNoteRef.current.startAnimation({x, y});
   };
 
-  const id = props.match.params.id; // 拿到url中的id字段以调用getAlbumDataDispatch发送请求
-  const {currentAlbum: currentAlbumImmutable, enterLoading, playlistCount} = props;
-  const {getAlbumDataDispatch} = props;
+
   useEffect(() => {
     getAlbumDataDispatch(id);
   }, [getAlbumDataDispatch, id]);
@@ -49,12 +51,12 @@ function Album(props) {
       headerDom.style.backgroundColor = style["theme-color"];
       headerDom.style.opacity = Math.min(1, (percent - 1) / 2);
       setTitle(currentAlbum.name);
-      setIsMarquee(true);
+      isMarquee.current = false;
     } else {
       headerDom.style.backgroundColor = "";
       headerDom.style.opacity = 1;
       setTitle("歌单");
-      setIsMarquee(false);
+      isMarquee.current = true;
     }
   }, [currentAlbum.name])
   const renderTopDesc = () => {
@@ -117,7 +119,10 @@ function Album(props) {
       appear={true}
       unmountOnExit
       // 在退出动画执行结束时跳转路由
-      onExited={props.history.goBack}
+      onExited={() => {
+        props.history.goBack()
+        clearAlbumStateDispatch()
+      }}
     >
 
       <Container playlistLength={playlistCount}>
@@ -125,7 +130,7 @@ function Album(props) {
           title={title}
           handleClick={handleBack}
           ref={headerEL}
-          isMarquee={isMarquee}
+          isMarquee={isMarquee.current}
           data={currentAlbum.name}
         />
 
@@ -165,6 +170,9 @@ const mapDispatchToProps = (dispatch) => {
     getAlbumDataDispatch(id) {
       dispatch(changeEnterLoading(true));
       dispatch(getAlbumList(id))
+    },
+    clearAlbumStateDispatch() {
+      dispatch(clearAlbumState());
     }
   }
 }

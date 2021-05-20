@@ -1,4 +1,4 @@
-import {CHANGE_ARTIST, CHANGE_ENTER_LOADING, CHANGE_SONGS_OF_ARTIST} from "./constants";
+import {CHANGE_ARTIST, CHANGE_ENTER_LOADING, CHANGE_SONGS_OF_ARTIST, CLEAR_SINGER_STATE} from "./constants";
 import {fromJS} from "immutable";
 import {getSingerInfoRequest} from "../../../api/request";
 
@@ -30,5 +30,11 @@ export const getSingerInfo = (id) => {
       dispatch(changeSongsOfArtist(data.hotSongs));
       dispatch(changeEnterLoading(false))
     })
+  }
+}
+
+export const clearSingerInfo = () => {
+  return {
+    type: CLEAR_SINGER_STATE,
   }
 }

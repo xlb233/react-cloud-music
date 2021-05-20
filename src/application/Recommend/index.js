@@ -46,7 +46,6 @@ const mapStateToProps = (state) => ({ // 映射全局state到recommend组件的p
   bannerList: state.getIn(['recommend', 'bannerList']),
   recommendList: state.getIn(['recommend', 'recommendList']),
   playlistCount: state.getIn(['player', 'playlist']).size,
-  // shouldReRender: state.getIn(['recommend', 'shouldReRender'])
 })
 
 // 映射 dispatch 到 props 上

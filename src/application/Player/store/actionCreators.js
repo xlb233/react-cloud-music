@@ -8,7 +8,8 @@ import {
   SET_PLAYLIST,
   SET_SEQUENCE_PLAYLIST,
   SET_SHOW_PLAYLIST,
-  INSERT_TO_CURRENT_PLAYLIST
+  INSERT_TO_CURRENT_PLAYLIST,
+  CLEAR_PLAYING_STATE
 } from "./constants"
 import {getSongDetailRequest} from '../../../api/request';
 
@@ -77,11 +78,19 @@ const insertToCurrentPlaylist = (data) => {
   }
 }
 
+// 搜索歌曲用到的
 export const getSongDetail = (id) => {
   return (dispatch) => {
     getSongDetailRequest(id).then(data => {
       let song = data.songs[0];
       dispatch(insertToCurrentPlaylist(song));
     })
+  }
+}
+
+
+export const clearPlayingState = () => {
+  return {
+    type: CLEAR_PLAYING_STATE,
   }
 }

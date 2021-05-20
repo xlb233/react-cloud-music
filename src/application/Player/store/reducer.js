@@ -103,6 +103,9 @@ export default (state = defaultState, action) => {
       return handleDelete(state, action.data)
     case actionTypes.INSERT_TO_CURRENT_PLAYLIST:
       return handleInsertSong(state, action.data);
+    case actionTypes.CLEAR_PLAYING_STATE:
+      console.log(`状态发生改变的时间${+new Date()}`)
+      return state.set('currentSong', fromJS({}));
     default:
       return state;
   }

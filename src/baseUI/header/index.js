@@ -28,29 +28,29 @@ const HeaderContainer = styled.div`
 // 使用React.forwardRef函数，接收一个函数作为参数，该函数以props和ref作为两个参数，返回一个组件
 // 可以将ref传递给Header组件下面的一个element上
 const Header = React.forwardRef((props, ref) => {
-    const {handleClick, title, isMarquee, data} = props;
-    return (
-        <HeaderContainer ref={ref}>
-            <i className="iconfont back" onClick={handleClick}>&#xe655;</i>
-            {isMarquee ? <MyMarquee text={data}/> : <h1>{title}</h1>}
-        </HeaderContainer>
-    )
+  const {handleClick, title, isMarquee, data} = props;
+  return (
+    <HeaderContainer ref={ref}>
+      <i className="iconfont back" onClick={handleClick}>&#xe655;</i>
+      {isMarquee ? <MyMarquee text={data}/> : <h1>{title}</h1>}
+    </HeaderContainer>
+  )
 })
 
 Header.defaultProps = {
-    handleClick: () => {
-    },
-    data: "跑马灯",
-    title: "标题",
-    // 是否有跑马灯效果
-    isMarquee: false
+  handleClick: () => {
+  },
+  data: "跑马灯",
+  title: "标题",
+  // 是否有跑马灯效果
+  isMarquee: false
 }
 
 Header.propTypes = {
-    handleClick: PropTypes.func,
-    title: PropTypes.string,
-    data: PropTypes.string,
-    isMarquee: PropTypes.bool,
+  handleClick: PropTypes.func,
+  title: PropTypes.string,
+  data: PropTypes.string,
+  isMarquee: PropTypes.bool,
 }
 
 export default React.memo(Header)

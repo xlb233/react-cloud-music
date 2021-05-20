@@ -75,11 +75,11 @@ function Rank(props) {
     <Container playlistLength={playlistCount}>
       <Scroll>
         <div>
-          <h1 className="offical" style={displayStyle}>官方榜</h1>
+          <h1 className="official" style={displayStyle}>官方榜</h1>
           {renderRankList(officialList)}
           <h1 className="global" style={displayStyle}>全球榜</h1>
           {renderRankList(globalList, true)}
-          {loading ? <Loading></Loading> : null}
+          {loading ? <Loading /> : null}
         </div>
       </Scroll>
       {renderRoutes(props.route.routes)}

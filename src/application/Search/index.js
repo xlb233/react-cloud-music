@@ -15,6 +15,8 @@ import Scroll from "../../baseUI/scroll";
 import LazyLoad, {forceCheck} from 'react-lazyload';
 import {getName} from "../../api/utils";
 import MusicalNote from '../../baseUI/musicNote';
+import musicPlaceholder from "./music.png"
+import singerPlaceHolder from "./singer.png"
 
 import {
   getSuggestList,
@@ -38,6 +40,7 @@ function Search(props) {
     getSuggestListDispatch,
     getSongDetailDispatch
   } = props
+
 
   const suggestList = immutableSuggestList.toJS();
   const resultList = immutableResultList.toJS();
@@ -103,7 +106,7 @@ function Search(props) {
                 onClick={() => props.history.push(`/singers/${item.id}`)}
               >
                 <div className="img_wrapper">
-                  <LazyLoad placeholder={<img width="100%" height="100%" src={require('./singer.png')} alt="singer"/>}>
+                  <LazyLoad placeholder={<img width="100%" height="100%" src={singerPlaceHolder} alt="music"/>}>
                     <img src={item.picUrl} width="100%" height="100%" alt="music"/>
                   </LazyLoad>
                 </div>
@@ -129,7 +132,7 @@ function Search(props) {
                 key={item.id}
                 onClick={() => props.history.push(`/album/${item.id}`)}>
                 <div className="img_wrapper">
-                  <LazyLoad placeholder={<img width="100%" height="100%" src={require('./music.png')} alt="music"/>}>
+                  <LazyLoad placeholder={<img width="100%" height="100%" src={musicPlaceholder} alt="music"/>}>
                     <img src={item.coverImgUrl} width="100%" height="100%" alt="music"/>
                   </LazyLoad>
                 </div>

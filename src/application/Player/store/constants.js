@@ -8,3 +8,4 @@ export const SET_SHOW_PLAYLIST = "player/SET_SHOW_PLAYLIST";
 export const SET_CURRENT_SONG = "player/SET_CURRENT_SONG";
 export const DELETE_SONG = "player/DELETE_SONG";
 export const INSERT_TO_CURRENT_PLAYLIST = "player/INSERT_TO_CURRENT_PLAYLIST";
+export const CLEAR_PLAYING_STATE = "player/CLEAR_PLAYING_STATE";

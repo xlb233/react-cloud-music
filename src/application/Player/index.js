@@ -11,6 +11,7 @@ import {
   changePlaylist,
   changePlayMode,
   changeShowPlaylist,
+  clearPlayingState,
 } from './store/actionCreators';
 import {connect} from "react-redux";
 import {findIndex, getSongUrl, isEmptyObject, shuffle} from "../../api/utils";
@@ -34,7 +35,8 @@ function Player(props) {
     changeCurrentSongDispatch,
     changePlayModeDispatch,
     changePlaylistDispatch,
-    toggleShowPlaylistDispatch
+    toggleShowPlaylistDispatch,
+    clearPlayingStateDispatch,
   } = props;
   const audioRef = useRef();
   const toastRef = useRef();
@@ -54,7 +56,7 @@ function Player(props) {
   const sequencePlaylist = immutableSequencePlaylist.toJS();
 
   const handleLyric = (index, txt) => {
-    if(!currentLyric.current)return;
+    if (!currentLyric.current) return;
     currentPlayingLyricIndex.current = index;
     setPlayingLyric(txt);
   }
@@ -62,7 +64,7 @@ function Player(props) {
   const getLyric = (id) => {
     let lyric = "";
     // 避免切歌后上一首播放的歌曲歌词还在计时
-    if(currentLyric.current) {
+    if (currentLyric.current) {
       currentLyric.current.stop();
     }
     getLyricRequest(id).then((data) => {
@@ -93,6 +95,7 @@ function Player(props) {
       return;
     playlist.count += 1;
     let current = playlist[currentIndex];
+
     preSong.current = current;
     setSongReady(false);
     changeCurrentSongDispatch(current);//赋值currentSong
@@ -118,7 +121,6 @@ function Player(props) {
   }, [playingState, playlist.length])
 
   const clickPlaying = (e, state) => {
-    console.log('click playing')
     state ? audioRef.current.play() : audioRef.current.pause(); // 根据当前播放状态确定播放和暂停
     e.stopPropagation(); //阻止事件冒泡到容器上
     togglePlayingDispatch(state);
@@ -180,7 +182,6 @@ function Player(props) {
     if (!playingState) togglePlayingDispatch(true);
     changeCurrentIndexDispatch(index);
     audioRef.current.play().catch(e => {
-      console.log(e)
       handleNext();
     });
   }
@@ -197,9 +198,10 @@ function Player(props) {
     audioRef.current.play().catch(e => {
       console.log(e)
     });
+
   }
 
-  // 播放完毕后的操作
+  // 当前歌曲播放完毕后的操作
   const handleEnd = () => {
     if (mode === 1) {
       handleSingleCycle();
@@ -207,6 +209,7 @@ function Player(props) {
       handleNext();
     }
   }
+
   return (
     <div>
       {
@@ -263,7 +266,8 @@ const mapStateToProps = state => {
     playlist: state.getIn(['player', 'playlist']),
     mode: state.getIn(['player', 'mode']),
     sequencePlaylist: state.getIn(['player', 'sequencePlaylist']),
-    showPlaylist: state.getIn(['player', 'showPlaylist'])
+    showPlaylist: state.getIn(['player', 'showPlaylist']),
+    picLoading: state.getIn(['player', 'picLoading'])
   }
 }
 
@@ -276,7 +280,6 @@ const mapDispatchToProps = dispatch => {
       dispatch(changeFullScreen(data))
     },
     toggleShowPlaylistDispatch(data) {
-      console.log(data)
       dispatch(changeShowPlaylist(data))
     },
     changeCurrentIndexDispatch(data) {
@@ -291,6 +294,9 @@ const mapDispatchToProps = dispatch => {
     changePlaylistDispatch(data) {
       dispatch(changePlaylist(data))
     },
+    clearPlayingStateDispatch() {
+      dispatch(clearPlayingState())
+    }
   }
 }
 

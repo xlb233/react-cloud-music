@@ -7,13 +7,13 @@ import Header from "../../baseUI/header";
 import {HEADER_HEIGHT} from "../../api/constant"
 
 import {connect} from "react-redux";
-import {getSingerInfo, changeEnterLoading} from "./store/actionCreators";
+import {getSingerInfo, changeEnterLoading, clearSingerInfo} from "./store/actionCreators";
 import Loading from "../../baseUI/loading"
 import MusicNote from "../../baseUI/musicNote"; // 音符陨落组件
 
 function Singer(props) {
   const {artist: immutableArtist, songs: immutableSongs, loading, playlistCount} = props;
-  const {getSingerDataDispatch} = props;
+  const {getSingerDataDispatch, clearSingerInfoDispatch} = props;
   const artist = immutableArtist.toJS();
   const songs = immutableSongs.toJS();
   const [showStatus, setShowStatus] = useState(true)
@@ -92,7 +92,10 @@ function Singer(props) {
       classNames="fly"
       appear={true}
       unmountOnExit
-      onExited={props.history.goBack}
+      onExited={() => {
+        props.history.goBack()
+        clearSingerInfoDispatch()
+      }}
     >
       <Container playlistLength={playlistCount}>
         <Header
@@ -124,14 +127,13 @@ function Singer(props) {
           </Scroll>
         </SongListWrapper>
         {loading ? (<Loading/>) : null}
-        <MusicNote  ref={musicNoteRef}/>
+        <MusicNote ref={musicNoteRef}/>
       </Container>
     </CSSTransition>
   )
 }
 
-const mapStateToProps = state =>
-{
+const mapStateToProps = state => {
   return {
     artist: state.getIn(["singerInfo", "artist"]),
     songs: state.getIn(["singerInfo", "songsOfArtist"]),
@@ -140,12 +142,14 @@ const mapStateToProps = state =>
   }
 }
 
-const mapDispatchToProps = dispatch =>
-{
+const mapDispatchToProps = dispatch => {
   return {
     getSingerDataDispatch(id) {
       dispatch(changeEnterLoading(true))
       dispatch(getSingerInfo(id))
+    },
+    clearSingerInfoDispatch() {
+      dispatch(clearSingerInfo())
     }
   }
 }

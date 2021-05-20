@@ -139,6 +139,7 @@ export const CdWrapper = styled.div`
       border: 10px solid rgba(255, 255, 255, 0.1);
     }
 
+
     .play {
       animation: ${rotate} 20s linear infinite;
 

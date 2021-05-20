@@ -9,6 +9,7 @@ import {
   LyricContainer,
   LyricWrapper
 } from "./style";
+
 import {formatPlayTime, getName} from "../../../api/utils";
 import {CSSTransition} from "react-transition-group";
 import animations from "create-keyframe-animation";
@@ -52,19 +53,20 @@ function NormalPlayer(props) {
     toggleFullScreen,
     clickPlaying,
     onProgressChange,
-    handleNext,
     handlePrev,
+    handleNext,
     handleChangeMode,
     toggleShowPlaylist
   } = props;
   const normalPlayerContainerRef = useRef();
   const normalPlayerCdRef = useRef();
   const [lyricDisplayState, setLyricDisplayState] = useState(''); // 控制显示专辑封面还是歌词
+
   const lyricScrollRef = useRef('');
   const lyricLineRefs = useRef([]);
   const transform = prefixStyle("transform");
 
-  useEffect (() => {
+  useEffect(() => {
     if (!lyricScrollRef.current) return;
     let bScroll = lyricScrollRef.current.getBScroll();
     if (bScroll && currentPlayingLyricIndex > 5) {
@@ -76,7 +78,6 @@ function NormalPlayer(props) {
       bScroll.scrollTo(0, 0, 1000);
     }
   }, [currentPlayingLyricIndex]);
-
   // 启用帧动画
   const enter = () => {
     normalPlayerContainerRef.current.style.display = "flex";
@@ -218,7 +219,8 @@ function NormalPlayer(props) {
               <Scroll ref={lyricScrollRef}>
                 <LyricWrapper
                   style={
-                    {visibility:
+                    {
+                      visibility:
                         lyricDisplayState === 'lyric'
                           ? "visible"
                           : "hidden"
@@ -265,7 +267,10 @@ function NormalPlayer(props) {
                 dangerouslySetInnerHTML={{__html: getPlayMode()}}
               />
             </div>
-            <div className="icon i-left" onClick={handlePrev}>
+            <div className="icon i-left" onClick={() => {
+              handlePrev()
+            }
+            }>
               <i className="iconfont">&#xe6e1;</i>
             </div>
             <div className="icon i-center">
@@ -275,7 +280,10 @@ function NormalPlayer(props) {
                 dangerouslySetInnerHTML={{__html: playing ? "&#xe723;" : "&#xe731;"}}
               />
             </div>
-            <div className="icon i-right" onClick={handleNext}>
+            <div className="icon i-right" onClick={() => {
+              handleNext()
+            }
+            }>
               <i className="iconfont">&#xe718;</i>
             </div>
             <div

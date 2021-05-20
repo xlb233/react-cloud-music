@@ -6,7 +6,8 @@ import {
   CHANGE_PAGE_COUNT,
   CHANGE_PULLUP_LOADING,
   CHANGE_PULLDOWN_LOADING,
-  CHANGE_ENTER_LOADING
+  CHANGE_ENTER_LOADING,
+  CLEAR_SINGERS_STATE
 } from './constants';
 import {fromJS} from "immutable";
 

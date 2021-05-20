@@ -36,8 +36,8 @@ function Loading(props) {
     const { show } = props;
     return (
         <LoadingWrapper style={show ? {display: ""}: {display: "none"}}>
-            <div></div>
-            <div></div>
+            <div />
+            <div />
         </LoadingWrapper>
     );
 }

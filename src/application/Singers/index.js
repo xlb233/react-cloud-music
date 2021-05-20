@@ -15,7 +15,7 @@ import {
   changeEnterLoading,
   changePageCount,
   changePullDownLoading,
-  changePullUpLoading
+  changePullUpLoading,
 } from "./store/actionCreators";
 import {connect} from 'react-redux';
 
@@ -30,6 +30,8 @@ import {renderRoutes} from "react-router-config";
 import Loading from "../../baseUI/loading";
 
 function Singers(props) {
+  console.log('歌手列表渲染')
+  console.log(props)
   const {data, dispatch} = useContext(contextSinger)
   const {styleUpper, styleLower, type, alpha, area} = data.toJS()
   const {singerList, enterLoading, pullUpLoading, pullDownLoading, pageCount, playlistCount} = props;
@@ -187,8 +189,8 @@ const mapDispatchToProps = (dispatch) => {
       } else {
         dispatch(getSingerList(type, area, alpha));
       }
-    }
+    },
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Singers));
+export default React.memo(connect(mapStateToProps, mapDispatchToProps)(Singers));
